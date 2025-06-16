@@ -4,6 +4,9 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const contentRoutes = require('./routes/contentRoutes');
+const submissionRoutes = require('./routes/submissionRoutes');
+
+
 
 const app = express();
 app.use(express.json());
@@ -11,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use('/api/auth', authRoutes);
 app.use('/api/content', contentRoutes);
-
+app.use('/api/submission', submissionRoutes);
 
 
 // MongoDB Connection
