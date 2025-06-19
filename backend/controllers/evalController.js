@@ -1,7 +1,8 @@
 const Tesseract = require('tesseract.js');
 const path = require('path');
+require('dotenv').config();
 
-// Read text from uploaded image
+// Evaluate student submission (mocked AI)
 exports.evaluateSubmission = async (req, res) => {
   const filePath = req.body.path;
 
@@ -12,33 +13,33 @@ exports.evaluateSubmission = async (req, res) => {
   const fullPath = path.join(__dirname, '..', filePath);
 
   try {
+    // Step 1: OCR - Extract text from image
     const result = await Tesseract.recognize(
       fullPath,
-      'eng',  // Hindi ke liye 'hin'
+      'eng+hin', // For Hinglish OCR
       { logger: m => console.log(m) }
     );
 
     const extractedText = result.data.text;
 
-    console.log("File to evaluate:", fullPath);
+    // Step 2: Mocked AI Feedback (temporary)
+    const jsonFeedback = {
+      score: 3,
+      feedback: "Great attempt! Diagram mention is missing. Improve structure."
+    };
 
-
-    // Simple rule-based feedback (AI model can be added later)
-    let feedback = '';
-    if (extractedText.toLowerCase().includes('photosynthesis')) {
-      feedback = "Great! You mentioned the key concept.";
-    } else {
-      feedback = "Answer seems incomplete. Please revise.";
-    }
-
+    // Step 3: Response back to client
     res.status(200).json({
       extractedText,
-      feedback
+      score: jsonFeedback.score,
+      feedback: jsonFeedback.feedback
     });
 
   } catch (err) {
     console.error(err);
-    res.status(500).json({ msg: "Error during OCR" });
+    res.status(500).json({ msg: "Evaluation failed", error: err.message });
   }
 };
+
+
 
