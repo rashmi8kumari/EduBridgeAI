@@ -25,9 +25,34 @@ exports.register = async (req, res) => {
 
     await user.save();
 
-    res.status(201).json({ msg: "User registered successfully" });
+    // ✅ Return token and user after registration
+    const payload = {
+      user: {
+        id: user._id,
+        role: user.role
+      }
+    };
+
+    jwt.sign(
+      payload,
+      process.env.JWT_SECRET,
+      { expiresIn: '1d' },
+      (err, token) => {
+        if (err) throw err;
+        res.json({
+          token,
+          user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role
+          }
+        });
+      }
+    );
 
   } catch (err) {
+    console.error(err);
     res.status(500).send("Server error");
   }
 };
@@ -57,11 +82,20 @@ exports.login = async (req, res) => {
       { expiresIn: '1d' },
       (err, token) => {
         if (err) throw err;
-        res.json({ token });
+        res.json({
+          token,
+          user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role
+          }
+        });
       }
     );
 
   } catch (err) {
+    console.error(err);
     res.status(500).send("Server error");
   }
 };

@@ -1,26 +1,75 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Navbar = ({ user, onLogout }) => {
-  const navigate = useNavigate();
-
-  const handleLogoutClick = () => {
-    onLogout();
-    navigate('/login');
-  };
-
   return (
-    <nav style={{ padding: '10px', backgroundColor: '#eee' }}>
-      <Link to="/" style={{ margin: '0 10px' }}>Upload</Link>
-      {user && <Link to="/history" style={{ margin: '0 10px' }}>History</Link>}
-      {!user && <Link to="/login" style={{ margin: '0 10px' }}>Login</Link>}
-      {!user && <Link to="/register">Register</Link>}
-      {user && (
-        <>
-          <span style={{ marginLeft: '10px' }}>👋 Welcome, {user.name}</span>
-          <button style={{ marginLeft: '10px' }} onClick={handleLogoutClick}>Logout</button>
-        </>
-      )}
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+      <Link className="navbar-brand" to="/">
+        EduBridge
+      </Link>
+
+      <div className="collapse navbar-collapse">
+        <ul className="navbar-nav me-auto">
+          <li className="nav-item">
+            <Link className="nav-link" to="/">
+              Upload
+            </Link>
+          </li>
+
+          {user?.role === 'teacher' && (
+            <li className="nav-item">
+              <Link className="nav-link" to="/upload-note">
+                Upload Notes
+              </Link>
+            </li>
+          )}
+
+          {user?.role === 'student' && (
+            <li className="nav-item">
+              <Link className="nav-link" to="/view-notes">
+                View Notes
+              </Link>
+            </li>
+          )}
+
+          {user && (
+            <li className="nav-item">
+              <Link className="nav-link" to="/history">
+                History
+              </Link>
+            </li>
+          )}
+        </ul>
+
+        <ul className="navbar-nav ms-auto">
+          {!user ? (
+            <>
+              <li className="nav-item">
+                <Link className="nav-link" to="/login">
+                  Login
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/register">
+                  Register
+                </Link>
+              </li>
+            </>
+          ) : (
+            <>
+              <li className="nav-item">
+                <span className="navbar-text text-light me-3">👋 {user.name}</span>
+              </li>
+              <li className="nav-item">
+                <button onClick={onLogout} className="btn btn-outline-light btn-sm">
+                  Logout
+                </button>
+              </li>
+            </>
+          )}
+        </ul>
+      </div>
     </nav>
   );
 };
