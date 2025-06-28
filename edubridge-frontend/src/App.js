@@ -12,6 +12,7 @@ import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
 import UploadNotePage from "./components/UploadNotePage";
 import ViewNotesPage from "./components/ViewNotesPage";
+import DashboardPage from "./components/DashboardPage";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -63,6 +64,10 @@ function App() {
           }
         />
         <Route path="/view-notes" element={<ViewNotesPage />} />
+        <Route
+          path="/dashboard"
+          element={user ? <DashboardPage /> : <Navigate to="/login" replace />}
+        />
       </Routes>
     </Router>
   );

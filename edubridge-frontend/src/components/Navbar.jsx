@@ -4,16 +4,36 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Navbar = ({ user, onLogout }) => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-4">
-      <Link className="navbar-brand" to="/">
-        EduBridge
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary px-4">
+      <Link className="navbar-brand fw-bold" to="/">
+        📘 EduBridge
       </Link>
 
-      <div className="collapse navbar-collapse">
-        <ul className="navbar-nav me-auto">
+      <button
+        className="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarContent"
+        aria-controls="navbarContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span className="navbar-toggler-icon" />
+      </button>
+
+      <div className="collapse navbar-collapse" id="navbarContent">
+        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+          {user && (
+            <li className="nav-item">
+              <Link className="nav-link" to="/dashboard">
+                Dashboard
+              </Link>
+            </li>
+          )}
+
           <li className="nav-item">
             <Link className="nav-link" to="/">
-              Upload
+              Upload Answer
             </Link>
           </li>
 
@@ -36,7 +56,7 @@ const Navbar = ({ user, onLogout }) => {
           {user && (
             <li className="nav-item">
               <Link className="nav-link" to="/history">
-                History
+                Evaluation History
               </Link>
             </li>
           )}
@@ -59,10 +79,15 @@ const Navbar = ({ user, onLogout }) => {
           ) : (
             <>
               <li className="nav-item">
-                <span className="navbar-text text-light me-3">👋 {user.name}</span>
+                <span className="navbar-text text-light me-3">
+                  👋 {user.name}
+                </span>
               </li>
               <li className="nav-item">
-                <button onClick={onLogout} className="btn btn-outline-light btn-sm">
+                <button
+                  onClick={onLogout}
+                  className="btn btn-outline-light btn-sm"
+                >
                   Logout
                 </button>
               </li>
@@ -75,4 +100,5 @@ const Navbar = ({ user, onLogout }) => {
 };
 
 export default Navbar;
+
 
