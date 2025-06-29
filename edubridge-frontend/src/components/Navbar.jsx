@@ -4,8 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Navbar = ({ user, onLogout }) => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-primary px-4">
-      <Link className="navbar-brand fw-bold" to="/">
+    <nav className="navbar navbar-expand-lg px-4" style={{ backgroundColor: '#212529' }}>
+      <Link className="navbar-brand fw-bold text-white" to="/">
         📘 EduBridge
       </Link>
 
@@ -22,24 +22,20 @@ const Navbar = ({ user, onLogout }) => {
       </button>
 
       <div className="collapse navbar-collapse" id="navbarContent">
-        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+        <ul className="navbar-nav mx-auto">
+
+          {/* ✅ Dashboard link for all logged-in users */}
           {user && (
             <li className="nav-item">
-              <Link className="nav-link" to="/dashboard">
+              <Link className="nav-link text-white" to="/dashboard">
                 Dashboard
               </Link>
             </li>
           )}
 
-          <li className="nav-item">
-            <Link className="nav-link" to="/">
-              Upload Answer
-            </Link>
-          </li>
-
           {user?.role === 'teacher' && (
             <li className="nav-item">
-              <Link className="nav-link" to="/upload-note">
+              <Link className="nav-link text-white" to="/upload-note">
                 Upload Notes
               </Link>
             </li>
@@ -47,7 +43,7 @@ const Navbar = ({ user, onLogout }) => {
 
           {user?.role === 'student' && (
             <li className="nav-item">
-              <Link className="nav-link" to="/view-notes">
+              <Link className="nav-link text-white" to="/view-notes">
                 View Notes
               </Link>
             </li>
@@ -55,7 +51,7 @@ const Navbar = ({ user, onLogout }) => {
 
           {user && (
             <li className="nav-item">
-              <Link className="nav-link" to="/history">
+              <Link className="nav-link text-white" to="/history">
                 Evaluation History
               </Link>
             </li>
@@ -66,22 +62,20 @@ const Navbar = ({ user, onLogout }) => {
           {!user ? (
             <>
               <li className="nav-item">
-                <Link className="nav-link" to="/login">
+                <Link className="nav-link text-white" to="/login">
                   Login
                 </Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to="/register">
+                <Link className="nav-link text-white" to="/register">
                   Register
                 </Link>
               </li>
             </>
           ) : (
             <>
-              <li className="nav-item">
-                <span className="navbar-text text-light me-3">
-                  👋 {user.name}
-                </span>
+              <li className="nav-item d-flex align-items-center me-3 text-light">
+                👋 {user.name}
               </li>
               <li className="nav-item">
                 <button
@@ -100,5 +94,13 @@ const Navbar = ({ user, onLogout }) => {
 };
 
 export default Navbar;
+
+
+
+
+
+
+
+
 
 

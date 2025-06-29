@@ -14,6 +14,8 @@ import UploadNotePage from "./components/UploadNotePage";
 import ViewNotesPage from "./components/ViewNotesPage";
 import DashboardPage from "./components/DashboardPage";
 
+
+
 function App() {
   const [user, setUser] = useState(null);
 
