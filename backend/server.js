@@ -10,7 +10,6 @@ const evalRoutes = require('./routes/evalRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const noteRoutes = require('./routes/noteRoutes');
 const dashboardRoutes = require('./routes/dashboard');
-const testRoutes = require('./routes/testRoutes');
 
 const app = express();
 app.use(express.json());
@@ -26,7 +25,6 @@ app.use('/api/eval', require('./routes/evalRoutes'));
 app.use('/api/upload', uploadRoutes);
 app.use('/api/notes', noteRoutes);
 app.use('/api/dashboard', dashboardRoutes);
-app.use('/api/test', testRoutes);
 
 
 
