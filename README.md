@@ -1,4 +1,4 @@
-📘 EduBridge — Educational Notes Management System
+# 📘 EduBridge — Educational Notes Management System
 EduBridge is a full-stack MERN (MongoDB, Express.js, React, Node.js) web application designed to streamline note sharing between teachers and students. It provides a secure, role-based platform where teachers can upload notes, and students can view and download them efficiently.
 
 🚀 Features
