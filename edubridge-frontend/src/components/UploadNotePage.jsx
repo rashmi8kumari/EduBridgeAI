@@ -1,51 +1,58 @@
 import React, { useState } from 'react';
-import api from '../api';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import api from '../api';
 
 const UploadNotePage = () => {
   const [form, setForm] = useState({
     title: '',
     subject: '',
     description: '',
-    fileUrl: ''
+    file: null
   });
-
-  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handleFileChange = (e) => {
+    setForm({ ...form, file: e.target.files[0] });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+
+    const token = localStorage.getItem('token');
+    const formData = new FormData();
+    formData.append("title", form.title);
+    formData.append("subject", form.subject);
+    formData.append("description", form.description);
+    formData.append("file", form.file);
 
     try {
-      const token = localStorage.getItem('token');
-      await api.post('/notes/upload', form, {
+      await api.post('/notes/upload', formData, {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
         }
       });
-      alert("✅ Note uploaded successfully!");
-      setForm({ title: '', subject: '', description: '', fileUrl: '' });
-    } catch (err) {
-      alert("❌ Error uploading note: " + (err.response?.data?.msg || "Server error"));
-    }
 
-    setLoading(false);
+      alert('Note uploaded successfully!');
+      setForm({ title: '', subject: '', description: '', file: null });
+    } catch (err) {
+      alert('Error uploading note: ' + (err.response?.data?.msg || 'Server error'));
+    }
   };
 
   return (
     <div className="container mt-5">
-      <h2 className="mb-4">📄 Upload Note</h2>
+      <h2 className="mb-4 text-success">📤 Upload a Note</h2>
+
       <form className="shadow p-4 bg-light rounded" onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label className="form-label">Note Title</label>
+          <label className="form-label">Title</label>
           <input
-            type="text"
-            className="form-control"
             name="title"
+            className="form-control"
             placeholder="Enter title"
             value={form.title}
             onChange={handleChange}
@@ -56,9 +63,8 @@ const UploadNotePage = () => {
         <div className="mb-3">
           <label className="form-label">Subject</label>
           <input
-            type="text"
-            className="form-control"
             name="subject"
+            className="form-control"
             placeholder="Enter subject"
             value={form.subject}
             onChange={handleChange}
@@ -67,32 +73,30 @@ const UploadNotePage = () => {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">File URL (Google Drive or PDF link)</label>
-          <input
-            type="url"
+          <label className="form-label">Description</label>
+          <textarea
+            name="description"
             className="form-control"
-            name="fileUrl"
-            placeholder="Enter file URL"
-            value={form.fileUrl}
+            placeholder="Write a short description"
+            value={form.description}
             onChange={handleChange}
+            required
+          ></textarea>
+        </div>
+
+        <div className="mb-4">
+          <label className="form-label">Upload File (PDF, DOC)</label>
+          <input
+            type="file"
+            className="form-control"
+            accept=".pdf,.doc,.docx"
+            onChange={handleFileChange}
             required
           />
         </div>
 
-        <div className="mb-4">
-          <label className="form-label">Description</label>
-          <textarea
-            className="form-control"
-            name="description"
-            placeholder="Add any extra details"
-            rows="4"
-            value={form.description}
-            onChange={handleChange}
-          />
-        </div>
-
-        <button className="btn btn-primary w-100" type="submit" disabled={loading}>
-          {loading ? 'Uploading...' : 'Upload Note'}
+        <button type="submit" className="btn btn-success w-100">
+          Upload Note
         </button>
       </form>
     </div>
@@ -100,5 +104,6 @@ const UploadNotePage = () => {
 };
 
 export default UploadNotePage;
+
 
 
